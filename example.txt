@@ -1,0 +1,82 @@
+makeVector <- function(x = numeric()) {
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setmean <- function(mean) m <<- mean
+        getmean <- function() m
+        list(set = set, get = get,
+             setmean = setmean,
+             getmean = getmean)
+}
+
+############################### Assignment 2 voorbeeld  ##########
+
+makeVector <- function(x = numeric()) {
+        m <- NULL
+        get <- function() x
+        setmean <- function(mean) m <<- mean
+        getmean <- function() m
+        list(get = get,
+             setmean = setmean,
+             getmean = getmean)
+}
+
+
+cachemean <- function(x, ...) {
+    m <- x$getmean()
+     if(!is.null(m)) {
+         message("getting cached data")
+         return(m)
+     }
+     data <- x$get()
+     m <- mean(data, ...)
+     x$setmean(m)
+     m
+ }
+
+test<- c(2.2, 4, 7)
+is.vector(test)
+cachemean(test)
+Error in x$getmean : $ operator is invalid for atomic vectors
+
+a<-makeVector(test)
+cachemean(a)
+cachemean(a)
+
+test2<- c(2.1, 4, 7)
+b<-makeVector(test2)
+cachemean(b)
+cachemean(a)
+
+###################### ombouw ####################
+
+makeVector2 <- function(x = matrix()) {
+        m <- NULL
+        get <- function() x
+        setmean <- function(mean) m <<- mean
+        getmean <- function() m
+        list(get = get,
+             setmean = setmean,
+             getmean = getmean)
+}
+
+cachemean2 <- function(x, ...) {
+    m <- x$getmean()
+     if(!is.null(m)) {
+         message("getting cached data")
+         return(m)
+     }
+     data <- x$get()
+     m <- solve(data, ...)
+     x$setmean(m)
+     m
+ }
+
+a <- matrix(1:4,2,2)
+test.a <- makeCacheMatrix(a)
+test.a
+cacheSolve(test.a)
+Error in cacheSolve(test.a) : could not find function "x.getinv"
